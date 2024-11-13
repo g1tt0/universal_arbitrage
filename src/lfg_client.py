@@ -85,8 +85,11 @@ class LFGclient:
             "versions": quote["versions"],
         }
 
-        # Get current gas price
-        gas_price = self.web3.eth.gas_price
+        base_fee = self.web3.eth.gas_price
+        max_priority_fee = int(
+            base_fee * 0.2
+        )  # Установите приоритетную комиссию (например, 20% от baseFee)
+        max_fee_per_gas = base_fee + max_priority_fee
 
         if recipient is None:
             recipient = self.account.address
@@ -98,7 +101,8 @@ class LFGclient:
             {
                 "from": self.account.address,
                 "value": amount_in_wei,
-                "gasPrice": gas_price,
+                "maxFeePerGas": max_fee_per_gas,
+                "maxPriorityFeePerGas": max_priority_fee,
                 "nonce": self.web3.eth.get_transaction_count(self.account.address),
                 "chainId": 43114,  # Avalanche C-Chain ID
             }
