@@ -38,6 +38,8 @@ class LFGclient:
 
     def get_best_path_from_amount_in(self, token_path, amount_in):
         token_path = [self.web3.to_checksum_address(addr) for addr in token_path]
+        print(token_path)
+        print(amount_in)
         quote = self.quoter.functions.findBestPathFromAmountIn(
             token_path, amount_in
         ).call()
